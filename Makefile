@@ -11,7 +11,8 @@ HEADER = includes/
 
 SOURCES =	pushswap.c	\
 			actions.c	\
-			radix.c
+			radix.c		\
+			sort.c
 
 SRCS = $(addprefix $(DIR_S),$(SOURCES))
 

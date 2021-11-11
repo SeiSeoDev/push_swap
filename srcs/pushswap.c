@@ -34,6 +34,44 @@ int get_ac(char *str)
     printf("%d\n", nb);
     return (nb);
 }*/
+int check_double(t_pile *pile)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (i < pile->max_a)
+    {
+        j = 0;
+        while (j < pile->max_a)
+        {
+            if (pile->a[i] == pile->a[j])
+                return (0);
+        }
+        i++;
+    }
+    return (1);
+}
+
+int is_sort(t_pile *pile)
+{
+    int i;
+    int last;
+
+    last = pile->a[0];
+    i = 1;
+    if (pile->max_a <= 1)
+        return (1);
+    while (pile->max_a > i && pile->a[i] > last)
+    {
+        last = pile->a[i];
+        i++;
+    }
+    if (i == pile->max_a)
+        return (1);
+    return (0);
+}
 
 void clean_pile(t_pile *pile)
 {
@@ -103,9 +141,15 @@ int main(int ac, char **av)
     clean_pile(pile);
     //test(ac - 1, pile->b);
     //test(ac - 1, pile->a);
-
-    radix_sort(pile);
- //  test(ac - 1, pile->a);
+    if (is_sort(pile))
+        return (0);
+    /*if (pile->max_a <= 3)
+        custom_sort(pile);
+    else
+        radix_sort(pile);
+ */
+    bubble_sort(pile);
+//  test(ac - 1, pile->a);
     /*
     convert_as_bin()
     size ?

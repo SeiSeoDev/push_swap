@@ -49,9 +49,18 @@ int					rrevers_b(t_pile *lst);
 int					rrevers_r(t_pile *lst);
 
 /*
+** push_swap.c
+*/
+int is_sort(t_pile *pile);
+/*
 ** radix.c
 */
-
 void radix_sort(t_pile *pile);
+/*
+** sort.c
+*/
+void custom_sort(t_pile *pile);
+
+void bubble_sort(t_pile *pile);
 
 #endif

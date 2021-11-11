@@ -26,6 +26,8 @@ void radix_sort(t_pile *pile)
     while (bit < max_bit)
     {
         i = 0;
+        if (is_sort(pile))
+            return;
         while(i < pile->max_a)
         {
             if ((pile->a[0] >> bit) % 2 == 0)
