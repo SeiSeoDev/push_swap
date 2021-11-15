@@ -1,19 +1,8 @@
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "push_swap.h"
 
-void test(int ac, int *tab)
-{
-    int i;
-    printf("________________________________\n");
-    i = 0;
-    while (i < ac)
-    {
-        printf("%d - ", tab[i]);
-        i++;
-    }
-    printf("\n");
-}
 /*
 int get_ac(char *str)
 {
@@ -73,7 +62,7 @@ int is_sort(t_pile *pile)
     return (0);
 }
 
-void clean_pile(t_pile *pile)
+int clean_pile(t_pile *pile)
 {
     int i = 0;
     while (i < pile->max_a)
@@ -105,6 +94,18 @@ int *convert_as_min(int size, t_pile *pile)
     }
     return (pile->b);
 }
+int is_nbr(char *str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+    {
+        if (str[i] > '9' || str[i] < '0')
+            return (0);
+    }
+    return (1);
+}
 
 int *fill_pile_a(int *a, int size, char **av)
 {
@@ -113,6 +114,8 @@ int *fill_pile_a(int *a, int size, char **av)
     i = 0;
     while(i < size)
     {
+        if (!is_nbr(a[i]))
+            exit()
         a[i] = atoi(av[i+1]);
         i++;
     }
@@ -143,12 +146,13 @@ int main(int ac, char **av)
     //test(ac - 1, pile->a);
     if (is_sort(pile))
         return (0);
-    /*if (pile->max_a <= 3)
+    if (pile->max_a <= 3)
         custom_sort(pile);
+    else if (pile->max_a <= 30)
+         bubble_sort(pile);
     else
         radix_sort(pile);
- */
-    bubble_sort(pile);
+
 //  test(ac - 1, pile->a);
     /*
     convert_as_bin()

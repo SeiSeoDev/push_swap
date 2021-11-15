@@ -52,6 +52,8 @@ int					rrevers_r(t_pile *lst);
 ** push_swap.c
 */
 int is_sort(t_pile *pile);
+void test(int ac, int *tab);
+
 /*
 ** radix.c
 */
@@ -62,5 +64,4 @@ void radix_sort(t_pile *pile);
 void custom_sort(t_pile *pile);
 
 void bubble_sort(t_pile *pile);
-
 #endif
