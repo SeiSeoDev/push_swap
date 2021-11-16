@@ -61,7 +61,7 @@ void radix_sort(t_pile *pile);
 /*
 ** sort.c
 */
-void custom_sort(t_pile *pile);
-
+void custom_sort(t_pile *pile, int min);
+void test(int ac, int *tab);
 void bubble_sort(t_pile *pile);
 #endif
