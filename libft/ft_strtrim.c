@@ -3,38 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamigore <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dasanter <dasanter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/12 18:13:32 by tamigore          #+#    #+#             */
-/*   Updated: 2019/11/19 13:39:17 by tamigore         ###   ########.fr       */
+/*   Created: 2019/11/08 16:53:16 by dasanter          #+#    #+#             */
+/*   Updated: 2021/11/17 16:55:35 by dasanter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+int	ft_isset(char c, char const *set)
 {
-	char	*str;
-	size_t	i;
-	size_t	j;
-	size_t	n;
+	int	i;
 
 	i = 0;
-	if (!s1)
-		return (NULL);
-	j = ft_strlen(s1);
-	if (j > 0)
-		j--;
-	while (ft_search((char *)set, s1[i]))
+	while (set[i])
+	{
+		if (set[i] == c)
+			return (1);
 		i++;
-	while (ft_search((char *)set, s1[j]) && j >= i)
-		j--;
-	str = (char *)malloc(sizeof(char) * (j - i + 2));
-	if (!str)
+	}
+	return (0);
+}
+
+char	*notmalloc(int start, int end)
+{
+	char	*ret;
+
+	if (end - start <= 0)
+	{
+		ret = malloc(1);
+		ret[0] = 0;
+		return (ret);
+	}
+	else
 		return (NULL);
-	n = 0;
-	while (i <= j)
-		str[n++] = s1[i++];
-	str[n] = '\0';
-	return (str);
+}
+
+char	*ft_strtrim(char const *str, char const *set)
+{
+	size_t	start;
+	size_t	end;
+	char	*ret;
+
+	if (!str || !set)
+		return (NULL);
+	if (!str[0])
+		return (ft_strdup(""));
+	start = 0;
+	end = ft_strlen((char *)str);
+	while (ft_isset(str[start], set))
+		start++;
+	if (start >= end)
+	{
+		ret = ft_substr(str, 0, 0);
+		return (ret);
+	}
+	while (ft_isset(str[end - 1], set))
+		end--;
+	if (end - start < 0)
+		return (notmalloc(start, end));
+	ret = ft_substr(str, (unsigned int)start, (end - start));
+	return (ret);
 }

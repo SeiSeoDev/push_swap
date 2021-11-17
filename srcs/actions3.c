@@ -1,31 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   actions3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dasanter <dasanter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/08 13:35:41 by dasanter          #+#    #+#             */
-/*   Updated: 2021/11/17 16:49:19 by dasanter         ###   ########.fr       */
+/*   Created: 2021/11/17 17:12:20 by dasanter          #+#    #+#             */
+/*   Updated: 2021/11/17 17:35:38 by dasanter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "push_swap.h"
 
-char	*ft_strdup(const char *s)
+int	push_a(t_pile *lst)
 {
-	int		i;
-	char	*dup;
+	int	i;
 
-	i = 0;
-	dup = malloc(ft_strlen(s) * sizeof(char) + 1);
-	if (!dup)
-		return (NULL);
-	while (s[i])
+	if (lst->max_b == 0)
+		return (-1);
+	i = lst->max_a - 1;
+	while (i >= 0)
 	{
-		dup[i] = s[i];
+		lst->a[i + 1] = lst->a[i];
+		i--;
+	}
+	i = 0;
+	lst->a[0] = lst->b[0];
+	while (i < lst->max_b)
+	{
+		lst->b[i] = lst->b[i + 1];
 		i++;
 	}
-	dup[i] = '\0';
-	return (dup);
+	lst->max_a++;
+	lst->max_b--;
+	ft_putstr("pa\n");
+	return (pa);
 }

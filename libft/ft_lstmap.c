@@ -3,49 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamigore <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dasanter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/16 14:06:18 by tamigore          #+#    #+#             */
-/*   Updated: 2019/11/06 15:04:51 by tamigore         ###   ########.fr       */
+/*   Created: 2019/11/20 15:45:25 by dasanter          #+#    #+#             */
+/*   Updated: 2019/11/20 20:35:45 by dasanter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	init(t_list *p, t_list *tmp, t_list *lst, void (*del)(void *))
-{
-	if (!p)
-	{
-		ft_lstclear(&lst, del);
-		return (0);
-	}
-	tmp = p;
-	return (1);
-}
-
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*p;
-	t_list	*tmp;
+	t_list		*new;
+	t_list		*back;
+	t_list		*tmp;
 
-	if (!lst || !f)
+	if (!lst)
 		return (NULL);
-	tmp = NULL;
-	p = ft_lstnew((*f)(lst->content));
-	if (!init(p, tmp, lst, del))
-		return (NULL);
-	lst = lst->next;
-	while (lst)
+	new = ft_lstnew(f(lst->content));
+	back = new;
+	while (lst->next)
 	{
-		p->next = ft_lstnew((*f)(lst->content));
-		if (!p->next)
-		{
-			ft_lstclear(&lst, del);
-			break ;
-		}
 		lst = lst->next;
-		p = p->next;
+		tmp = new;
+		new = ft_lstnew(f(lst->content));
+		if (!new)
+			ft_lstclear(&back, del);
+		tmp->next = new;
 	}
-	p = tmp;
-	return (p);
+	new = ft_lstnew(f(lst->content));
+	if (!new)
+		ft_lstclear(&back, del);
+	new->next = NULL;
+	return (back);
 }

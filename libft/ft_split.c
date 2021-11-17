@@ -3,105 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamigore <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dasanter <dasanter@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/04 13:56:52 by tamigore          #+#    #+#             */
-/*   Updated: 2019/11/11 21:02:38 by tamigore         ###   ########.fr       */
+/*   Created: 2019/11/13 14:37:10 by dasanter          #+#    #+#             */
+/*   Updated: 2021/11/17 16:48:27 by dasanter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	void	ft_free_all(char **tab, int x)
+int	n_word(const char *str, int n, char sep)
+{
+	int		i;
+
+	i = 0;
+	while (n > -1 && str[i])
+	{
+		while (str[i] == sep)
+			i++;
+		if (!(str[i] == sep) && str[i])
+		{
+			if (n == 0)
+				break ;
+			else
+				n--;
+		}
+		while (!(str[i] == sep) && str[i])
+			i++;
+	}
+	if (n == -1)
+		while ((str[i] == sep) && str[i])
+			i++;
+	return (i);
+}
+
+int	count_word(const char *str, char sep)
+{
+	int	i;
+	int	count;
+
+	count = 0;
+	i = 0;
+	while (str[i])
+	{
+		while ((str[i] == sep) && str[i])
+			i++;
+		if (!(str[i] == sep) && str[i])
+			count++;
+		while (!(str[i] == sep) && str[i])
+			i++;
+	}
+	return (count);
+}
+
+int	size_nword(const char *str, char sep, int n)
+{
+	int	i;
+	int	j;
+
+	j = 0;
+	i = n_word(str, n, sep);
+	while (str[i + j] != sep && str[i + j] != 0)
+		j++;
+	return (j);
+}
+
+void	*gratuit(char **str)
 {
 	int	i;
 
 	i = 0;
-	while (i < x)
-		free(tab[i++]);
-	free(tab);
+	while (str[i])
+		free(str[i]);
+	free(str);
+	return (NULL);
 }
 
-static	int	add_space_to_tab(char **tab, int j, int *x)
+char	**ft_split(const char *str, char charset)
 {
-	tab[*x] = (char *)malloc(j + 1);
-	if (!tab[*x])
-	{
-		ft_free_all(tab, *x);
-		return (0);
-	}
-	x++;
-	return (1);
-}
-
-static	char	**ft_malloctab(char **tab, const char *s, char c, int x)
-{
-	int		j;
-	int		i;
-
-	i = 0;
-	while (s[i])
-	{
-		j = 0;
-		while (s[i] != c && s[i])
-		{
-			j++;
-			i++;
-		}
-		if (j != 0)
-			if (!add_space_to_tab(tab, j, &x))
-				return (NULL);
-		if (s[i])
-			i++;
-	}
-	return (tab);
-}
-
-static	void	ft_filtab(char **tab, const char *s, char c)
-{
+	char	**af_split;
 	int		i;
 	int		j;
-	int		x;
 
 	i = 0;
-	x = 0;
-	while (s[i])
+	af_split = (char **)malloc((1 + count_word(str, charset)) * sizeof(char *));
+	while (i < count_word(str, charset))
 	{
-		if (s[i] != c)
-		{
-			j = 0;
-			while (s[i] != c && s[i])
-				tab[x][j++] = s[i++];
-			tab[x++][j] = '\0';
-		}
-		if (s[i])
-			i++;
-	}
-	tab[x] = NULL;
-}
-
-char	**ft_split(char const *s, char c)
-{
-	int		i;
-	int		j;
-	char	**tab;
-
-	i = 0;
-	j = 0;
-	if (!s)
-		return (NULL);
-	while (s[i])
-	{
-		if (s[i] != c && (s[i + 1] == c || s[i + 1] == '\0'))
-			j++;
+		af_split[i] = malloc((1 + size_nword(str, charset, i)) * sizeof(char));
+		if (!af_split[i])
+			return (gratuit(af_split));
 		i++;
 	}
-	tab = (char **)malloc(sizeof(char *) * (j + 1));
-	if (!tab)
-		return (NULL);
-	tab = ft_malloctab(tab, s, c, 0);
-	if (!tab)
-		return (NULL);
-	ft_filtab(tab, s, c);
-	return (tab);
+	af_split[i--] = NULL;
+	while (i >= 0)
+	{
+		j = -1;
+		while (++j < size_nword(str, charset, i))
+			af_split[i][j] = str[n_word(str, i, charset) + j];
+		af_split[i][j] = '\0';
+		i--;
+	}
+	return (af_split);
 }

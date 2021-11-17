@@ -3,47 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tamigore <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: dasanter <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/12 20:05:26 by tamigore          #+#    #+#             */
-/*   Updated: 2021/10/14 17:50:56 by tamigore         ###   ########.fr       */
+/*   Created: 2019/11/13 19:00:46 by dasanter          #+#    #+#             */
+/*   Updated: 2019/11/20 17:56:23 by dasanter         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	int	ft_neg(int n)
+int	getsize(int nb)
 {
-	if (n < 0)
-		return (1);
-	return (0);
+	int	size;
+
+	size = 0;
+	if (nb < 0)
+	{
+		size++;
+		nb = nb * -1;
+	}
+	if (nb == 0)
+		size++;
+	while (nb)
+	{
+		size++;
+		nb /= 10;
+		if (nb == 0)
+			return (size++);
+	}
+	return (size);
 }
 
 char	*ft_itoa(int n)
 {
-	char			*p;
-	int				unit;
 	unsigned int	nb;
+	char			*str;
 	int				i;
 
-	i = 0;
+	str = (char *)malloc((getsize(n) + 1) * sizeof(char));
+	if (!str)
+		return (NULL);
+	if (n < 0)
+		str[0] = '-';
 	if (n < 0)
 		nb = -n;
 	else
 		nb = n;
-	unit = ft_nbrlen(nb);
-	p = (char *)malloc(unit + 1 + ft_neg(n));
-	if (!p)
-		return (NULL);
-	while (unit > 0)
+	i = getsize(n);
+	str[i] = 0;
+	while (i--)
 	{
-		p[i++] = nb % 10 + '0';
+		if (i == 0 && n < 0)
+			break ;
+		str[i] = nb % 10 + 48;
 		nb /= 10;
-		unit--;
 	}
-	if (n < 0)
-		p[i++] = '-';
-	p[i] = '\0';
-	p = ft_strrev(p);
-	return (p);
+	return (str);
 }
